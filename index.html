@@ -344,52 +344,44 @@
                         </div>
                     </div>
                 </div>
-                <!-- ==================== FOTO DEL DNI (VERSIÓN CORREGIDA) ==================== -->
-<div class="mt-12">
-    <h2 class="section-title">Foto del DNI / NIE *</h2>
-    <p class="text-sm text-gray-600 mb-4">
-        Sube una foto clara del anverso de tu DNI o NIE. Formatos: JPG, PNG, PDF (máx. 5MB)
-    </p>
+                <!-- ==================== FOTO DEL DNI (IMÁGENES + PDF) ==================== -->
+                <div class="mt-12">
+                    <h2 class="section-title">Foto del DNI / NIE *</h2>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Sube una foto clara del anverso de tu DNI o el documento completo (JPG, PNG o PDF - máx. 5MB)
+                    </p>
 
-    <div id="drop-zone"
-         class="border-2 border-dashed border-gray-300 rounded-3xl p-10 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer">
-        
-        <input type="file" 
-               id="foto-dni" 
-               name="foto_dni" 
-               accept="image/jpeg,image/png,application/pdf"
-               class="hidden">
+                    <div id="drop-zone" 
+                        class="border-2 border-dashed border-gray-300 rounded-3xl p-10 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer min-h-[220px] flex items-center justify-center">
+                        
+                        <input type="file" id="foto-dni" name="foto_dni" accept="image/jpeg,image/png,application/pdf" class="hidden">
 
-        <div id="upload-content">
-            <div class="mx-auto w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-5xl mb-5">
-                📸
-            </div>
-            <p class="text-lg font-medium text-gray-700">Toca o haz clic para subir la foto</p>
-            <p class="text-sm text-gray-500 mt-1">o arrastra la imagen aquí</p>
-            <p class="text-xs text-gray-400 mt-4">Máximo 5 MB</p>
-        </div>
+                        <div id="upload-content" class="text-center">
+                            <div class="mx-auto w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-5xl mb-5">📄</div>
+                            <p class="text-lg font-medium text-gray-700">Haz clic o arrastra el archivo aquí</p>
+                            <p class="text-sm text-gray-500">JPG, PNG o PDF • Máximo 5 MB</p>
+                        </div>
 
-        <!-- Vista previa -->
-        <div id="preview-area" class="hidden">
-            <img id="preview-image" 
-                 class="max-h-72 mx-auto rounded-2xl shadow-lg border border-gray-200" 
-                 alt="Vista previa del DNI">
-            
-            <div class="flex justify-center gap-4 mt-6">
-                <button type="button" id="change-photo"
-                        class="px-6 py-3 text-blue-600 hover:bg-blue-50 rounded-2xl font-medium transition">
-                    Cambiar foto
-                </button>
-                <button type="button" id="remove-photo"
-                        class="px-6 py-3 text-red-600 hover:bg-red-50 rounded-2xl font-medium transition">
-                    Eliminar
-                </button>
-            </div>
-        </div>
-    </div>
+                        <!-- Vista previa -->
+                        <div id="preview-area" class="hidden w-full">
+                            <div id="preview-container" class="mx-auto max-w-md"></div>
+                            
+                            <div class="flex justify-center gap-4 mt-6">
+                                <button type="button" id="change-photo" 
+                                        class="px-6 py-3 text-blue-600 hover:bg-blue-50 rounded-2xl font-medium transition">
+                                    Cambiar archivo
+                                </button>
+                                <button type="button" id="remove-photo"
+                                        class="px-6 py-3 text-red-600 hover:bg-red-50 rounded-2xl font-medium transition">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-    <input type="hidden" name="foto_dni_base64" id="foto-dni-base64">
-</div>
+                    <input type="hidden" name="foto_dni_base64" id="foto-dni-base64">
+                    <input type="hidden" name="foto_dni_nombre" id="foto-dni-nombre">
+                </div>
                 <!-- ==================== CAMPO DE FIRMA DIGITAL ==================== -->
                 <div class="mt-12">
                     <h2 class="section-title">Firma del solicitante *</h2>
@@ -731,114 +723,131 @@
             });
         </script>
         <script>
-        // Inicializar Signature Pad
-        let signaturePad;
+        
+        // ==================== FIRMA DIGITAL CORREGIDA ====================
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const canvas = document.getElementById('signature-canvas');
-            signaturePad = new SignaturePad(canvas, {
-                backgroundColor: 'rgb(255, 255, 255)',
-                penColor: 'rgb(0, 0, 0)',
-                minWidth: 1.5,
-                maxWidth: 3
-            });
+            let signaturePad;
 
-            // Botón Borrar
-            document.getElementById('clear-signature').addEventListener('click', () => {
-                signaturePad.clear();
-                document.getElementById('firma-data').value = '';
-            });
+            document.addEventListener('DOMContentLoaded', () => {
+                const canvas = document.getElementById('signature-canvas');
+                
+                signaturePad = new SignaturePad(canvas, {
+                    backgroundColor: '#ffffff',
+                    penColor: '#1e40af',
+                    minWidth: 1.2,
+                    maxWidth: 3.5,
+                    throttle: 16
+                });
 
-            // Botón Deshacer (opcional)
-            document.getElementById('undo-signature').addEventListener('click', () => {
-                const data = signaturePad.toData();
-                if (data.length > 0) {
-                    data.pop();
-                    signaturePad.fromData(data);
+                // Ajuste importante para evitar desplazamiento
+                function resizeCanvas() {
+                    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                    canvas.width = canvas.offsetWidth * ratio;
+                    canvas.height = canvas.offsetHeight * ratio;
+                    canvas.getContext('2d').scale(ratio, ratio);
+                    signaturePad.clear(); // Limpiar después de redimensionar
                 }
+
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas(); // Inicial
+
+                // Guardar firma
+                function saveSignature() {
+                    if (!signaturePad.isEmpty()) {
+                        document.getElementById('firma-data').value = signaturePad.toDataURL('image/png');
+                    }
+                }
+
+                canvas.addEventListener('mouseup', saveSignature);
+                canvas.addEventListener('touchend', saveSignature);
+
+                // Botones
+                document.getElementById('clear-signature').addEventListener('click', () => {
+                    signaturePad.clear();
+                    document.getElementById('firma-data').value = '';
+                });
+
+                document.getElementById('undo-signature').addEventListener('click', () => {
+                    const data = signaturePad.toData();
+                    if (data.length > 0) {
+                        data.pop();
+                        signaturePad.fromData(data);
+                        saveSignature();
+                    }
+                });
             });
-
-            // Guardar la firma automáticamente cuando se suelta el ratón/dedo
-            canvas.addEventListener('mouseup', saveSignature);
-            canvas.addEventListener('touchend', saveSignature);
-        });
-
-        function saveSignature() {
-            if (!signaturePad.isEmpty()) {
-                const dataURL = signaturePad.toDataURL('image/png');
-                document.getElementById('firma-data').value = dataURL;
-            }
-        }
         </script>
+        // ==================== FOTO DEL DNI - SOPORTE PARA PDF ====================
         <script>
-            // ==================== FOTO DEL DNI - VERSIÓN MEJORADA ====================
+        
             const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('foto-dni');
             const uploadContent = document.getElementById('upload-content');
             const previewArea = document.getElementById('preview-area');
-            const previewImage = document.getElementById('preview-image');
+            const previewContainer = document.getElementById('preview-container');
             const base64Input = document.getElementById('foto-dni-base64');
+            const nombreInput = document.getElementById('foto-dni-nombre');
 
             function handleFile(file) {
                 if (!file) return;
 
                 if (file.size > 5 * 1024 * 1024) {
-                    alert("La imagen es demasiado grande. El tamaño máximo es 5 MB.");
+                    alert("El archivo es demasiado grande. Máximo 5 MB.");
                     return;
                 }
 
+                nombreInput.value = file.name;
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    previewImage.src = e.target.result;
                     base64Input.value = e.target.result;
-                    
+
+                    // Mostrar vista previa según tipo de archivo
+                    previewContainer.innerHTML = '';
+
+                    if (file.type === "application/pdf") {
+                        previewContainer.innerHTML = `
+                            <div class="bg-gray-100 border border-gray-300 rounded-2xl p-8 text-center">
+                                <div class="text-6xl mb-4">📕</div>
+                                <p class="font-medium">${file.name}</p>
+                                <p class="text-xs text-gray-500 mt-2">Documento PDF</p>
+                            </div>`;
+                    } else {
+                        // Imagen
+                        previewContainer.innerHTML = `<img src="${e.target.result}" class="max-h-80 mx-auto rounded-2xl shadow-lg border border-gray-200" alt="Vista previa DNI">`;
+                    }
+
                     uploadContent.classList.add('hidden');
                     previewArea.classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
             }
 
-            // Click en la zona
-            dropZone.addEventListener('click', () => {
-                fileInput.click();
-            });
-
-            // Cambio de archivo
+            // Eventos
+            dropZone.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) {
-                    handleFile(e.target.files[0]);
-                }
+                if (e.target.files.length > 0) handleFile(e.target.files[0]);
             });
 
-            // Drag & Drop
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dropZone.classList.add('border-blue-500', 'bg-blue-50');
             });
-
-            dropZone.addEventListener('dragleave', () => {
-                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-            });
-
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-blue-500', 'bg-blue-50'));
             dropZone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-                if (e.dataTransfer.files.length > 0) {
-                    handleFile(e.dataTransfer.files[0]);
-                }
+                if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
             });
 
-            // Botones de vista previa
-            document.getElementById('change-photo').addEventListener('click', () => {
-                fileInput.click();
-            });
-
+            document.getElementById('change-photo').addEventListener('click', () => fileInput.click());
             document.getElementById('remove-photo').addEventListener('click', () => {
                 fileInput.value = '';
                 base64Input.value = '';
+                nombreInput.value = '';
                 uploadContent.classList.remove('hidden');
                 previewArea.classList.add('hidden');
             });
-            </script>
+        </script>
     </body>
 </html>
