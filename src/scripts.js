@@ -1,7 +1,7 @@
 //Confirmando el enlace
-console.log("JS enlazado 001");
+console.log("JS enlazado");
 
-alert("Ahora si");
+
 
 // Lógica para mostrar el apartado correspondiente
   const radios = document.querySelectorAll('input[name="tipo_personal"]');
