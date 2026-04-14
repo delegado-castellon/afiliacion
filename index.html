@@ -344,44 +344,52 @@
                         </div>
                     </div>
                 </div>
-                <!-- ==================== FOTO DEL DNI ==================== -->
-                <div class="mt-12">
-                    <h2 class="section-title">Foto del DNI / NIE</h2>
-                    <p class="text-sm text-gray-600 mb-4">
-                        Sube una foto clara de tu DNI (anverso). Formatos permitidos: JPG, PNG, PDF (máx. 5MB)
-                    </p>
+                <!-- ==================== FOTO DEL DNI (VERSIÓN CORREGIDA) ==================== -->
+<div class="mt-12">
+    <h2 class="section-title">Foto del DNI / NIE *</h2>
+    <p class="text-sm text-gray-600 mb-4">
+        Sube una foto clara del anverso de tu DNI o NIE. Formatos: JPG, PNG, PDF (máx. 5MB)
+    </p>
 
-                    <div class="border-2 border-dashed border-gray-300 rounded-3xl p-8 text-center hover:border-blue-400 transition">
-                        <input type="file" 
-                            id="foto-dni" 
-                            name="foto_dni" 
-                            accept="image/jpeg, image/png, application/pdf"
-                            class="hidden">
+    <div id="drop-zone"
+         class="border-2 border-dashed border-gray-300 rounded-3xl p-10 text-center hover:border-blue-500 hover:bg-blue-50 transition-all cursor-pointer">
+        
+        <input type="file" 
+               id="foto-dni" 
+               name="foto_dni" 
+               accept="image/jpeg,image/png,application/pdf"
+               class="hidden">
 
-                        <div id="upload-area" 
-                            class="cursor-pointer flex flex-col items-center py-6">
-                            <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-4xl mb-4">
-                                📸
-                            </div>
-                            <p class="text-lg font-medium text-gray-700">Haz clic para subir la foto del DNI</p>
-                            <p class="text-sm text-gray-500 mt-1">o arrastra la imagen aquí</p>
-                        </div>
+        <div id="upload-content">
+            <div class="mx-auto w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center text-5xl mb-5">
+                📸
+            </div>
+            <p class="text-lg font-medium text-gray-700">Toca o haz clic para subir la foto</p>
+            <p class="text-sm text-gray-500 mt-1">o arrastra la imagen aquí</p>
+            <p class="text-xs text-gray-400 mt-4">Máximo 5 MB</p>
+        </div>
 
-                        <!-- Vista previa -->
-                        <div id="preview-area" class="hidden">
-                            <img id="preview-image" 
-                                class="max-h-64 mx-auto rounded-2xl shadow-md" 
-                                alt="Vista previa DNI">
-                            <button type="button" id="remove-photo"
-                                    class="mt-4 text-red-600 hover:text-red-700 text-sm font-medium flex items-center gap-2 mx-auto">
-                                <i class="fas fa-trash"></i> Eliminar foto
-                            </button>
-                        </div>
-                    </div>
+        <!-- Vista previa -->
+        <div id="preview-area" class="hidden">
+            <img id="preview-image" 
+                 class="max-h-72 mx-auto rounded-2xl shadow-lg border border-gray-200" 
+                 alt="Vista previa del DNI">
+            
+            <div class="flex justify-center gap-4 mt-6">
+                <button type="button" id="change-photo"
+                        class="px-6 py-3 text-blue-600 hover:bg-blue-50 rounded-2xl font-medium transition">
+                    Cambiar foto
+                </button>
+                <button type="button" id="remove-photo"
+                        class="px-6 py-3 text-red-600 hover:bg-red-50 rounded-2xl font-medium transition">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Campo oculto donde se guardará la imagen en base64 -->
-                    <input type="hidden" name="foto_dni_base64" id="foto-dni-base64">
-                </div>
+    <input type="hidden" name="foto_dni_base64" id="foto-dni-base64">
+</div>
                 <!-- ==================== CAMPO DE FIRMA DIGITAL ==================== -->
                 <div class="mt-12">
                     <h2 class="section-title">Firma del solicitante *</h2>
@@ -763,60 +771,73 @@
         }
         </script>
         <script>
-            // ==================== FOTO DEL DNI ====================
+            // ==================== FOTO DEL DNI - VERSIÓN MEJORADA ====================
+            const dropZone = document.getElementById('drop-zone');
             const fileInput = document.getElementById('foto-dni');
-            const uploadArea = document.getElementById('upload-area');
+            const uploadContent = document.getElementById('upload-content');
             const previewArea = document.getElementById('preview-area');
             const previewImage = document.getElementById('preview-image');
-            const removeBtn = document.getElementById('remove-photo');
             const base64Input = document.getElementById('foto-dni-base64');
 
-            uploadArea.addEventListener('click', () => fileInput.click());
-
-            fileInput.addEventListener('change', handleFileSelect);
-
-            function handleFileSelect(e) {
-                const file = e.target.files[0];
+            function handleFile(file) {
                 if (!file) return;
 
-                // Validar tamaño (máximo 5MB)
                 if (file.size > 5 * 1024 * 1024) {
-                    alert("La foto es demasiado grande. Máximo 5MB.");
+                    alert("La imagen es demasiado grande. El tamaño máximo es 5 MB.");
                     return;
                 }
 
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    previewImage.src = event.target.result;
-                    base64Input.value = event.target.result;   // Guardamos en base64
-                    uploadArea.classList.add('hidden');
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    base64Input.value = e.target.result;
+                    
+                    uploadContent.classList.add('hidden');
                     previewArea.classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
             }
 
-            // Eliminar foto
-            removeBtn.addEventListener('click', () => {
-                fileInput.value = '';
-                base64Input.value = '';
-                uploadArea.classList.remove('hidden');
-                previewArea.classList.add('hidden');
+            // Click en la zona
+            dropZone.addEventListener('click', () => {
+                fileInput.click();
             });
 
-            // Soporte para arrastrar y soltar
-            const dropZone = document.getElementById('upload-area').parentElement;
+            // Cambio de archivo
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            // Drag & Drop
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
                 dropZone.classList.add('border-blue-500', 'bg-blue-50');
             });
+
             dropZone.addEventListener('dragleave', () => {
                 dropZone.classList.remove('border-blue-500', 'bg-blue-50');
             });
+
             dropZone.addEventListener('drop', (e) => {
                 e.preventDefault();
                 dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelect({ target: fileInput });
+                if (e.dataTransfer.files.length > 0) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Botones de vista previa
+            document.getElementById('change-photo').addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            document.getElementById('remove-photo').addEventListener('click', () => {
+                fileInput.value = '';
+                base64Input.value = '';
+                uploadContent.classList.remove('hidden');
+                previewArea.classList.add('hidden');
             });
             </script>
     </body>
