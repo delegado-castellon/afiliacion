@@ -205,134 +205,11 @@ inputDNI.addEventListener("input", () => {
     }
 });
        
-        
-// ==================== FIRMA DIGITAL CORREGIDA ====================
-/*
-let signaturePad;
-
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('signature-canvas');
-    
-    signaturePad = new SignaturePad(canvas, {
-        backgroundColor: '#ffffff',
-        penColor: '#1e40af',
-        minWidth: 1.2,
-        maxWidth: 3.5,
-        throttle: 16
-    });
-
-    // Ajuste importante para evitar desplazamiento
-    function resizeCanvas() {
-        const ratio = Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext('2d').scale(ratio, ratio);
-        signaturePad.clear(); // Limpiar después de redimensionar
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Inicial
-
-    // Guardar firma
-    function saveSignature() {
-        if (!signaturePad.isEmpty()) {
-            document.getElementById('firma-data').value = signaturePad.toDataURL('image/png');
-        }
-    }
-
-    canvas.addEventListener('mouseup', saveSignature);
-    canvas.addEventListener('touchend', saveSignature);
-
-    // Botones
-    document.getElementById('clear-signature').addEventListener('click', () => {
-        signaturePad.clear();
-        document.getElementById('firma-data').value = '';
-    });
-
-    document.getElementById('undo-signature').addEventListener('click', () => {
-        const data = signaturePad.toData();
-        if (data.length > 0) {
-            data.pop();
-            signaturePad.fromData(data);
-            saveSignature();
-        }
-    });
-});*/
-       
-/* SOPORTE PARA FOTO DNI . EN BARBECHO
-            
-            const dropZone = document.getElementById('drop-zone');
-            const fileInput = document.getElementById('foto-dni');
-            const uploadContent = document.getElementById('upload-content');
-            const previewArea = document.getElementById('preview-area');
-            const previewContainer = document.getElementById('preview-container');
-            const base64Input = document.getElementById('foto-dni-base64');
-            const nombreInput = document.getElementById('foto-dni-nombre');
-
-            function handleFile(file) {
-                if (!file) return;
-
-                if (file.size > 5 * 1024 * 1024) {
-                    alert("El archivo es demasiado grande. Máximo 5 MB.");
-                    return;
-                }
-
-                nombreInput.value = file.name;
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    base64Input.value = e.target.result;
-
-                    // Mostrar vista previa según tipo de archivo
-                    previewContainer.innerHTML = '';
-
-                    if (file.type === "application/pdf") {
-                        previewContainer.innerHTML = `
-                            <div class="bg-gray-100 border border-gray-300 rounded-2xl p-8 text-center">
-                                <div class="text-6xl mb-4">📕</div>
-                                <p class="font-medium">${file.name}</p>
-                                <p class="text-xs text-gray-500 mt-2">Documento PDF</p>
-                            </div>`;
-                    } else {
-                        // Imagen
-                        previewContainer.innerHTML = `<img src="${e.target.result}" class="max-h-80 mx-auto rounded-2xl shadow-lg border border-gray-200" alt="Vista previa DNI">`;
-                    }
-
-                    uploadContent.classList.add('hidden');
-                    previewArea.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-
-            // Eventos
-            dropZone.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length > 0) handleFile(e.target.files[0]);
-            });
-
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('border-blue-500', 'bg-blue-50');
-            });
-            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-blue-500', 'bg-blue-50'));
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-                if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
-            });
-
-            document.getElementById('change-photo').addEventListener('click', () => fileInput.click());
-            document.getElementById('remove-photo').addEventListener('click', () => {
-                fileInput.value = '';
-                base64Input.value = '';
-                nombreInput.value = '';
-                uploadContent.classList.remove('hidden');
-                previewArea.classList.add('hidden');
-            });
-       */
 //script para enviar los datos a google sheets
 async function enviar() {
 
+  const firmaBase64 = document.getElementById("firma-data").value || ""; //para la firma
+  console.log(firmaBase64);
   const data = {
       nombre: document.getElementById("nombre").value,
       apellido1: document.getElementById("apellido1").value,
@@ -359,14 +236,16 @@ async function enviar() {
       puesto_trabajo: document.getElementById("puesto_trabajo").value,
       fecha_alta: document.getElementById("fecha_alta").value,
       acepta_privacidad: document.getElementById("acepta_privacidad").value,
+      firma: firmaBase64
   };
 
   try {
-      await fetch("https://script.google.com/macros/s/AKfycbzE207MmihCqjAAlQ1hSDZnKC0ISeIpZ_c7VQ4_mzcXLunmtMWZxTpC9E46rLN5zU4NNg/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbw8N8W_BzN95Vr05aHBr1MWOAtcXgpHNSs0_VsMDEv3MYB15bvnaa0KqYPIhFU6hwN9qg/exec", {
       method: "POST",
       body: JSON.stringify(data)
       });
-      console.log("GS_OK");
+      console.log("GS ok");
+
   } catch (error) {
       console.error(error);
       alert("Error");
