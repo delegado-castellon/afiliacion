@@ -329,3 +329,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 previewArea.classList.add('hidden');
             });
        */
+//script para enviar los datos a google sheets
+async function enviar() {
+
+  const data = {
+      nombre: document.getElementById("nombre").value,
+      apellido1: document.getElementById("apellido1").value,
+      apellido2: document.getElementById("apellido2").value,
+      sexo: document.querySelector('input[name="sexo"]:checked')?.value || "",
+      ano_nacimiento: document.getElementById("ano_nacimiento").value,
+      nif: document.getElementById("nif").value,
+      telefono: document.getElementById("telefono").value,
+      email: document.getElementById("email").value,
+      nivel_formativo: document.getElementById("nivel_formativo").value,
+      direccion: document.getElementById("direccion").value,
+      numero: document.getElementById("numero").value,
+      piso: document.getElementById("piso").value,
+      letra_puerta: document.getElementById("letra_puerta").value,
+      codigo_postal: document.getElementById("codigo_postal").value,
+      provincia: document.getElementById("provincia").value,
+      tipo_cuota: document.querySelector('input[name="tipo_cuota"]:checked')?.value || "",
+      centro_penitenciario: document.getElementById("centro-value").value || "",
+      ano_ingreso: document.getElementById("ano_ingreso").value,
+      tipo_personal: document.querySelector('input[name="tipo_personal"]:checked')?.value || "",
+      grupo: document.querySelector('input[name="grupo"]:checked')?.value || "",
+      en_practicas: document.getElementById("en_practicas").value,
+      grado_consolidado: document.getElementById("grado_consolidado").value,
+      puesto_trabajo: document.getElementById("puesto_trabajo").value,
+      fecha_alta: document.getElementById("fecha_alta").value,
+      acepta_privacidad: document.getElementById("acepta_privacidad").value,
+  };
+
+  try {
+      await fetch("https://script.google.com/macros/s/AKfycbzE207MmihCqjAAlQ1hSDZnKC0ISeIpZ_c7VQ4_mzcXLunmtMWZxTpC9E46rLN5zU4NNg/exec", {
+      method: "POST",
+      body: JSON.stringify(data)
+      });
+      //dejar solo en desarrollo**************************************
+      alert("PRUEBA 1: Guardado en Google Sheets");
+
+  } catch (error) {
+      console.error(error);
+      alert("Error");
+  }
+}
