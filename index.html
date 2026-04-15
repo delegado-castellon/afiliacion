@@ -393,8 +393,9 @@
                     <div class="border-2 border-gray-300 rounded-3xl overflow-hidden bg-white">
                         <canvas id="signature-canvas" 
                                 class="w-full touch-action-none"
-                                style="height: 220px; width: 100%;"></canvas>
+                                style="height: 220px; width: 100%; touch-action: none; -ms-touch-action: none"></canvas>
                     </div>
+                        
                     <!-- Campo oculto donde se guardará la firma en base64 -->
                         <input type="hidden" name="firma" id="firma-data" required>
 
