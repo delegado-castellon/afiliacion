@@ -452,7 +452,7 @@
                     <i class="fas fa-paper-plane"></i>
                     Enviar solicitud
                 </button>
-            <div id="form-message" class="mt-6 p-5 rounded-2xl text-center text-lg"></div>
+            <!--<div id="form-message" class="mt-6 p-5 rounded-2xl text-center text-lg"></div>-->
             </form>
         </div></div>
         <!-- ==================== FOOTER / ENLACES SOCIALES ==================== -->
@@ -534,6 +534,30 @@
                 </p>
             </div>
         </div>
+        
+        <!-- ==================== TOAST ÉXITO ==================== -->
+        <div id="successToast"
+            class="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+
+            <div id="toastBox"
+                class="bg-black/90 text-white px-6 py-4 rounded-2xl shadow-lg
+                        flex items-center gap-3
+                        opacity-0 translate-y-[-20px] scale-95
+                        transition-all duration-300 ease-out">
+
+                <span class="text-green-400 text-xl">✔</span>
+
+                <span class="text-sm font-medium">
+                    Solicitud enviada correctamente
+                </span>
+
+            </div>
+        </div>
+        
+        
+        
+        
+        
         <!-- sitio correcto para cargar los SCRIPTS JS -->
         <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>-->
         <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>

@@ -121,6 +121,8 @@ form.addEventListener('submit', function(e) {
     showMessage('success', '¡Solicitud enviada con éxito! ✅<br>Te contactaremos pronto.');
     submitBtn.innerHTML = originalBtnText;
     submitBtn.disabled = false;
+    //TOAST DE ÉXITO
+    showToast();
 
     // Enviar con EmailJS
     /*emailjs.sendForm('service_04v84lc', 'template_qecdm6i', this)
@@ -384,3 +386,18 @@ dniInput.addEventListener('change', function(e) {
     reader.readAsDataURL(file);
 });
 
+// TOAST DE ÉXITO
+
+const toast = document.getElementById('toastBox');
+
+function showToast() {
+    // Mostrar
+    toast.classList.remove('opacity-0', 'translate-y-[-20px]', 'scale-95');
+    toast.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+
+    // Ocultar después
+    setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+        toast.classList.add('opacity-0', 'translate-y-[-20px]', 'scale-95');
+    }, 2500);
+}
