@@ -102,7 +102,7 @@ renderCentros(centros);
 
 // Envío de correos a través de emailjs
 
-emailjs.init({ publicKey: "FjItOKQhO8vJGYH-S" });
+//emailjs.init({ publicKey: "FjItOKQhO8vJGYH-S" });
 
 const form = document.getElementById('afiliacion-form');
 const submitBtn = form.querySelector('button[type="submit"]');
@@ -117,8 +117,13 @@ form.addEventListener('submit', function(e) {
     `;
     submitBtn.disabled = true;
 
+    enviar();
+    showMessage('success', '¡Solicitud enviada con éxito! ✅<br>Te contactaremos pronto.');
+    submitBtn.innerHTML = originalBtnText;
+    submitBtn.disabled = false;
+    
     // Enviar con EmailJS
-    emailjs.sendForm('service_04v84lc', 'template_qecdm6i', this)
+    /*emailjs.sendForm('service_04v84lc', 'template_qecdm6i', this)
         .then(() => {
             // Mensaje de éxito bonito
             showMessage('success', '¡Solicitud enviada con éxito! ✅<br>Te contactaremos pronto.');
@@ -134,7 +139,7 @@ form.addEventListener('submit', function(e) {
             // Restaurar botón
             submitBtn.innerHTML = originalBtnText;
             submitBtn.disabled = false;
-        });
+        });*/
 });
 
 // Función para mostrar mensaje bonito
