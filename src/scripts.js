@@ -383,3 +383,85 @@ dniInput.addEventListener('change', function(e) {
 
     reader.readAsDataURL(file);
 });
+
+// PARA CAPTURA DNI ---- EXPERIMENTO
+const video = document.getElementById('video');
+const canvas = document.getElementById('captureCanvas');
+const cameraContainer = document.getElementById('camera-container');
+const cancelBtn = document.getElementById('cancelCamera');
+
+let stream;
+let checking = false;
+
+// Abrir cámara
+async function openCamera() {
+    cameraContainer.classList.remove('hidden');
+
+    stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" }
+    });
+
+    video.srcObject = stream;
+
+    startAutoCapture();
+}
+
+// Cerrar cámara
+function closeCamera() {
+    cameraContainer.classList.add('hidden');
+
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+}
+
+// Botón cancelar
+cancelBtn.addEventListener('click', closeCamera);
+
+// 🔥 AUTO-DETECCIÓN SIMPLE
+function startAutoCapture() {
+    if (checking) return;
+    checking = true;
+
+    const interval = setInterval(() => {
+
+        if (!video.videoWidth) return;
+
+        // Simulación: esperar estabilidad (2 segundos)
+        // 👉 aquí podrías meter OpenCV en el futuro
+        if (Math.random() > 0.97) { // simula "detectado"
+            captureImage();
+            clearInterval(interval);
+            checking = false;
+        }
+
+    }, 200);
+}
+
+// 📸 Capturar imagen
+function captureImage() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0);
+
+    const base64 = canvas.toDataURL('image/jpeg', 0.7);
+
+    // Guardar en tu input
+    document.getElementById('dni-base64').value = base64;
+
+    // Preview
+    const preview = document.getElementById('previewDni');
+    preview.src = base64;
+    preview.classList.remove('hidden');
+
+    closeCamera();
+}
+
+//CONECTANDO AL EVENTO CLICK DEL BOTON
+
+document.getElementById('dniFoto').addEventListener('click', (e) => {
+    e.preventDefault();
+    openCamera();
+});

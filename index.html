@@ -395,6 +395,25 @@
                     <!-- Campo base64 -->
                     <input type="hidden" name="dni_base64" id="dni-base64" required>
                 </div>
+
+                <!--OVERLAY PARA LA CÁMARA---EXPERIMENTO-->
+                <div id="camera-container" class="fixed inset-0 bg-black z-50 hidden flex flex-col items-center justify-center">
+
+                    <video id="video" autoplay playsinline class="w-full max-w-md rounded-xl"></video>
+
+                    <!-- Marco -->
+                    <div class="absolute border-2 border-white rounded-xl"
+                        style="width: 280px; height: 180px;"></div>
+
+                    <p class="text-white mt-4">Alinea el DNI dentro del marco</p>
+
+                    <button id="cancelCamera"
+                            class="mt-6 bg-white text-black px-6 py-2 rounded-xl">
+                        Cancelar
+                    </button>
+                </div>
+
+<canvas id="captureCanvas" class="hidden"></canvas>
                 <!-- ==================== CAMPO DE FIRMA DIGITAL ==================== -->
                     <div class="mt-12">
                     <h2 class="section-title">Firma del solicitante *</h2>
