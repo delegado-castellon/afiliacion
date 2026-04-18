@@ -275,7 +275,7 @@ async function enviar() {
   };
 
   try {
-      await fetch("https://script.google.com/macros/s/AKfycbyzSB0cg0wRty2MW0aRcR5ELPaDWVQlw7EAm8uC51hWWP7d_q1xmkZ_igCSn2IkauiX5A/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbwEyKN_BYoFTZRI6PMfhyfIYfnmiiSevlb9HzQ-RVDpXW81oZwynhuUXkaTkHUwaQgI/exec", {
       method: "POST",
       body: JSON.stringify(data)
       });
