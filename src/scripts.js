@@ -171,30 +171,38 @@ form.addEventListener('submit', function(e) {
 // Función para mostrar mensaje bonito
 function showMessage(type, message) {
     let msgDiv = document.getElementById('form-message');
+    
     if (!msgDiv) {
         msgDiv = document.createElement('div');
         msgDiv.id = 'form-message';
-        msgDiv.className = 'mt-6 p-5 rounded-2xl text-center text-lg';
-        //form.prepend(msgDiv);   // Lo pone arriba del formulario
-        form.append(msgDiv);
+        msgDiv.className = 'mt-6 p-5 rounded-2xl text-center text-lg font-bold shadow-sm';
+        // Asegúrate de que 'form' esté definido globalmente o usa document.querySelector('form')
+        document.querySelector('form').append(msgDiv);
     }
 
     if (type === 'success') {
         msgDiv.style.backgroundColor = '#ecfdf5';
         msgDiv.style.color = '#10b981';
         msgDiv.style.border = '1px solid #a7f3d0';
+        
+        // --- REDIRECCIÓN ---
+        // Esperamos 1.5 segundos para que el usuario lea el mensaje y luego redirigimos
+        setTimeout(() => {
+            window.location.replace = 'gracias.html';
+        }, 1500);
+
     } else {
         msgDiv.style.backgroundColor = '#fef2f2';
         msgDiv.style.color = '#ef4444';
         msgDiv.style.border = '1px solid #fecaca';
+        
+        // Solo desaparece el mensaje automáticamente si es un error
+        setTimeout(() => {
+            if (msgDiv) msgDiv.remove();
+        }, 8000);
     }
 
     msgDiv.innerHTML = message;
-
-    // Desaparece automáticamente después de 8 segundos
-    setTimeout(() => {
-        if (msgDiv) msgDiv.remove();
-    }, 8000);
 }
 
 // Validación DNI
@@ -426,3 +434,28 @@ dniInput.addEventListener('change', function(e) {
 
     reader.readAsDataURL(file);
 });
+
+//Botón COMPARTIR
+
+const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', async () => {
+            const shareData = {
+                title: 'Afiliación ACAIP',
+                text: 'Compañero, únete al sindicato mayoritario de prisiones. ¡La unión hace la fuerza!',
+                url: window.location.origin + '/index.html' // Asume que el formulario está en index.html
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(shareData.url);
+                    const btnSpan = shareBtn.querySelector('span');
+                    const originalText = btnSpan.innerText;
+                    btnSpan.innerText = '¡Copiado!';
+                    setTimeout(() => btnSpan.innerText = originalText, 2000);
+                }
+            } catch (err) {
+                console.error('Error al compartir:', err);
+            }
+        });
