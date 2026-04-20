@@ -169,7 +169,7 @@ form.addEventListener('submit', function(e) {
 });
 
 // Función para mostrar mensaje bonito
-/*function showMessage(type, message) {
+function showMessage(type, message) {
     let msgDiv = document.getElementById('form-message');
     if (!msgDiv) {
         msgDiv = document.createElement('div');
@@ -196,7 +196,7 @@ form.addEventListener('submit', function(e) {
         if (msgDiv) msgDiv.remove();
     }, 8000);
 }
-*/
+
 // Validación DNI
 function validarDNI(dni) {
     const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
