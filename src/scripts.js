@@ -459,3 +459,36 @@ const shareBtn = document.getElementById('shareBtn');
                 console.error('Error al compartir:', err);
             }
         });
+
+// BARRA DE PROGRESO
+
+const form = document.getElementById("afiliacion-form");
+const progressBar = document.getElementById("progress-bar");
+
+// Selecciona todos los campos requeridos
+const requiredFields = form.querySelectorAll("[required]");
+
+function updateProgress() {
+    let filled = 0;
+
+    requiredFields.forEach(field => {
+        if (field.type === "radio") {
+            // comprobar grupo de radios
+            const group = form.querySelectorAll(`[name="${field.name}"]`);
+            if ([...group].some(r => r.checked)) filled++;
+        } else if (field.type === "checkbox") {
+            if (field.checked) filled++;
+        } else {
+            if (field.value.trim() !== "") filled++;
+        }
+    });
+
+    const total = new Set([...requiredFields].map(f => f.name)).size;
+    const percent = (filled / total) * 100;
+
+    progressBar.style.width = percent + "%";
+}
+
+// Escuchar cambios
+form.addEventListener("input", updateProgress);
+form.addEventListener("change", updateProgress);
