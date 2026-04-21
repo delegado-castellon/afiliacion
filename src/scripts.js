@@ -436,28 +436,3 @@ dniInput.addEventListener('change', function(e) {
     reader.readAsDataURL(file);
 });
 
-//Botón COMPARTIR
-
-const shareBtn = document.getElementById('shareBtn');
-        shareBtn.addEventListener('click', async () => {
-            const shareData = {
-                title: 'Afiliación ACAIP',
-                text: 'Compañero, únete al sindicato mayoritario de prisiones. ¡La unión hace la fuerza!',
-                url: window.location.origin + '/index.html' // Asume que el formulario está en index.html
-            };
-            console.log(shareData.url);
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    await navigator.clipboard.writeText(shareData.url);
-                    const btnSpan = shareBtn.querySelector('span');
-                    const originalText = btnSpan.innerText;
-                    btnSpan.innerText = '¡Copiado!';
-                    setTimeout(() => btnSpan.innerText = originalText, 2000);
-                }
-            } catch (err) {
-                console.error('Error al compartir:', err);
-            }
-        });
-

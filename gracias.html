@@ -107,6 +107,40 @@
             </a>
         </div>
     </main>
-    <script src="src/scripts.js"></script>
+    <script>
+        //Botón COMPARTIR
+
+
+        // Esperamos a que todo el HTML esté cargado
+        shareBtn.addEventListener('click', async () => {
+    // Calculamos la ruta base para asegurar que siempre envíe al index
+    const rootPath = window.location.origin + window.location.pathname.replace('gracias.html', 'index.html');
+
+    const shareData = {
+        title: 'Afiliación ACAIP',
+        text: 'Compañero, únete al sindicato mayoritario de prisiones. ¡La unión hace la fuerza!',
+        url: rootPath // Esto fuerza que sea index.html
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            // Fallback: Copiar al portapapeles
+            await navigator.clipboard.writeText(shareData.url);
+            
+            const btnSpan = shareBtn.querySelector('span');
+            const originalText = btnSpan.innerText;
+            btnSpan.innerText = '¡Enlace copiado!';
+            
+            setTimeout(() => {
+                btnSpan.innerText = originalText;
+            }, 2000);
+        }
+    } catch (err) {
+        console.log('Uusario canceló o error de plataforma:', err);
+    }
+});
+            </script>
 </body>
 </html>
