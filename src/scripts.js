@@ -127,6 +127,12 @@ form.addEventListener('submit', function(e) {
     
     form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    
+    // ⏱️ CALCULAR EL TIEMPO AQUÍ
+    const tiempoFin = Date.now();
+    const diferenciaSegundos = Math.round((tiempoFin - tiempoInicio) / 1000);
+    document.getElementById('tiempo_fin').value = diferenciaSegundos;
+    console.log("Tiempo final:", diferenciaSegundos);
 
     submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando solicitud...`;
     submitBtn.disabled = true;
@@ -454,22 +460,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     document.addEventListener('focusin', iniciarAlTocar);
 
-
-
-    const formulario = document.querySelector('form');
-    
-    if (formulario) {
-        formulario.addEventListener('submit', () => {
-            // Calculamos la hora de fin
-            const tiempoFin = Date.now();
-            
-            // Calculamos la diferencia en segundos
-            const diferenciaSegundos = Math.round((tiempoFin - tiempoInicio) / 1000);
-            
-            // Guardamos el valor en el input oculto antes de que se envíe
-            document.getElementById('tiempo_fin').value = diferenciaSegundos;
-            
-            console.log(`Formulario completado en: ${diferenciaSegundos} segundos`);
-        });
-    }
 });
