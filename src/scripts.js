@@ -249,7 +249,7 @@ inputDNI.addEventListener("input", () => {
 async function enviar() {
 
   const firmaBase64 = document.getElementById("firma-data").value || ""; //para la firma
-  const dniBase64 = document.getElementById("dni-base64").value || ""; //para la firma
+  const dniBase64 = document.getElementById("dni-base64").value || ""; //para el dni
   console.log("Longitud: " + firmaBase64.length);
   const data = {
       nombre: document.getElementById("nombre")?.value?.toUpperCase() || "",
@@ -285,7 +285,7 @@ async function enviar() {
   };
 
   try {
-      await fetch("https://script.google.com/macros/s/AKfycbypM5_KHO3H8obCFHUOE1l09p7tMaGn6IMjst1biTDgpNccpEze6Gtz721q_RSN9DvS4g/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbzYcKgZ0XEAv_LwBloHrXnoxd-_hFaDjcYWnaGC5GvS4PT8SP8CKwFeduiOV769SE5ZLQ/exec", {
       method: "POST",
       body: JSON.stringify(data)
       });
