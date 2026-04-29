@@ -237,7 +237,7 @@ form.addEventListener('submit', async function (e) {
     form.reset();
   } catch (error) {
     console.error("Error al enviar:", error);
-    showMessage('error', 'Error al enviar la solicitud ❌<br>Por favor, inténtalo de nuevo.');
+    showMessage('error', 'Error al enviar la solicitud ❌<br>Por favor, inténtalo de nuevo.\n' + error);
   } finally {
     // FIX: usar finally para restaurar el botón siempre, tanto en éxito como en error
     submitBtn.innerHTML = originalBtnText;
