@@ -194,6 +194,7 @@ async function enviar() {
 
   const formData = new FormData();
   formData.append("payload", JSON.stringify(data));
+  formData.append("token", "S3cr3tAcaip2026_XYZ_91");
   const response = await fetch(
     "https://script.google.com/macros/s/AKfycbyyIbSbnS6yimprnF9nrmQwvpHvhJdDIxxoi0ZysLEaE5ih7CAHKWTcdJIyIS7FDiSJ-Q/exec",
     {
