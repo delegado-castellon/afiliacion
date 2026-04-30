@@ -195,7 +195,7 @@ async function enviar() {
   const formData = new FormData();
   formData.append("payload", JSON.stringify(data));
   const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbzFZpIOXUgPQvLilkNSwcMzOXMCqvKDQCzwmLQRkWpQdJI4BsS_ha0fiqR52OLN0wkF9w/exec",
+    "https://script.google.com/macros/s/AKfycbyyIbSbnS6yimprnF9nrmQwvpHvhJdDIxxoi0ZysLEaE5ih7CAHKWTcdJIyIS7FDiSJ-Q/exec",
     {
       method: "POST",
       //body: JSON.stringify(data)
