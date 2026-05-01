@@ -341,19 +341,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==================== FOTO DNI ====================
-const dniInput = document.getElementById('dniFoto');
+const fotoDniInput = document.getElementById('dniFoto');
 const preview = document.getElementById('previewDni');
 const previewContainer = document.getElementById('dni-preview-container');
 const placeholder = document.getElementById('dni-placeholder');
 const base64Input = document.getElementById('dni-base64');
 
-dniInput.addEventListener('change', function (e) {
+fotoDniInput.addEventListener('change', function (e) {
   const file = e.target.files[0];
   if (!file) return;
 
   if (!file.type.startsWith('image/')) {
     alert('Selecciona una imagen válida');
-    dniInput.value = '';
+    fotoDniInput.value = '';
     return;
   }
 
