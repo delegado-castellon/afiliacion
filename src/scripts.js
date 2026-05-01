@@ -114,15 +114,16 @@ document.addEventListener('focusin', iniciarAlTocar);
 // FIX: función centralizada de validación antes de enviar
 function validarFormulario() {
   const errores = [];
-
-  if (!validarDNI(inputDNI.value)) {
-    errores.push("El DNI introducido no es válido.");
-    inputDNI.classList.add("border-red-500");
+  const dni = document.getElementById("nif");
+  if(!dni.value) {
+    dni.setCustomValidity("El DNI es obligatorio");
+    dni.reportValidity();
+    dni.focus();
   }
 
   const firma = document.getElementById("firma-data").value;
   if (!firma) {
-    errores.push("La firma es obligatoria.");
+    errores.push("Falta firmar la solicitud.");
   }
 
   const centro = document.getElementById("centro-value").value;
