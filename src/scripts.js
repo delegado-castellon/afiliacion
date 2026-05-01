@@ -17,6 +17,18 @@ radios.forEach(radio => {
   });
 });
 
+function aplicarMaxLength(valor) {
+  const inputs = document.querySelectorAll('input[type="text"]');
+
+  inputs.forEach(input => {
+    if (!input.hasAttribute("maxlength")) {
+      input.setAttribute("maxlength", valor);
+    }
+  });
+}
+
+aplicarMaxLength(50);
+
 // ==================== CENTRO PENITENCIARIO ====================
 const centros = [
   "A LAMA", "ALBACETE", "ALBOLOTE", "ALCAZAR DE SAN JUAN", "ALGECIRAS",
@@ -97,37 +109,7 @@ const iniciarAlTocar = () => {
 document.addEventListener('focusin', iniciarAlTocar);
 
 // ==================== VALIDACIONES ====================
-function validarDNI(dni) {
-  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-  const regex = /^[0-9]{8}[A-Z]$/;
-  dni = dni.toUpperCase();
-  if (!regex.test(dni)) return false;
-  const numero = dni.substring(0, 8);
-  const letra = dni.charAt(8);
-  return letra === letras[numero % 23];
-}
 
-const inputDNI = document.getElementById("nif");
-const errorDNI = document.getElementById("dni-error");
-
-inputDNI.addEventListener("input", () => {
-  inputDNI.value = inputDNI.value.toUpperCase().replace(/[^0-9A-Z]/g, "");
-  const dni = inputDNI.value;
-  if (dni.length === 9) {
-    if (validarDNI(dni)) {
-      errorDNI.classList.add("opacity-0");
-      inputDNI.classList.remove("border-red-500");
-      inputDNI.classList.add("border-green-500");
-    } else {
-      errorDNI.classList.remove("opacity-0");
-      inputDNI.classList.add("border-red-500");
-      inputDNI.classList.remove("border-green-500");
-    }
-  } else {
-    errorDNI.classList.add("opacity-0");
-    inputDNI.classList.remove("border-red-500", "border-green-500");
-  }
-});
 
 // FIX: función centralizada de validación antes de enviar
 function validarFormulario() {
@@ -385,4 +367,81 @@ fotoDniInput.addEventListener('change', function (e) {
     };
   };
   reader.readAsDataURL(file);
+});
+
+//Validación directa dni
+/*function validarDNI(dni) {
+  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+  const regex = /^[0-9]{8}[A-Z]$/;
+  dni = dni.toUpperCase();
+  if (!regex.test(dni)) return false;
+  const numero = dni.substring(0, 8);
+  const letra = dni.charAt(8);
+  return letra === letras[numero % 23];
+}
+
+const inputDNI = document.getElementById("nif");
+const errorDNI = document.getElementById("dni-error");
+
+inputDNI.addEventListener("input", () => {
+  inputDNI.value = inputDNI.value.toUpperCase().replace(/[^0-9A-Z]/g, "");
+  const dni = inputDNI.value;
+  if (dni.length === 9) {
+    if (validarDNI(dni)) {
+      errorDNI.classList.add("opacity-0");
+      inputDNI.classList.remove("border-red-500");
+      inputDNI.classList.add("border-green-500");
+    } else {
+      errorDNI.classList.remove("opacity-0");
+      inputDNI.classList.add("border-red-500");
+      inputDNI.classList.remove("border-green-500");
+    }
+  } else {
+    errorDNI.classList.add("opacity-0");
+    inputDNI.classList.remove("border-red-500", "border-green-500");
+  }
+});*/
+
+const dniInput = document.getElementById("nif");
+
+function validarDNI(dni) {
+  const regex = /^\d{8}[A-Z]$/;
+  if (!regex.test(dni)) return "Formato 8 dígitos + letra";
+
+  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+  const num = parseInt(dni.substring(0, 8), 10);
+
+  if (dni[8] !== letras[num % 23]) return "DNI incorrecto";
+
+  return "";
+}
+
+// 🔥 validación al perder foco (modo nativo real)
+dniInput.addEventListener("blur", () => {
+  let dni = dniInput.value.toUpperCase().trim();
+  dniInput.value = dni;
+
+  dniInput.setCustomValidity("");
+
+  if (!dni) return; // required ya se encarga
+
+  const error = validarDNI(dni);
+
+  if (error) {
+    dniInput.classList.remove("border-green-500");
+    dniInput.classList.add("border-red-500");
+    dniInput.setCustomValidity(error);
+    dniInput.reportValidity();
+    dniInput.classList.remove("border-green-500");
+    dniInput.classList.add("border-red-500");
+  }else{
+    dniInput.classList.remove("border-red-500");
+    dniInput.classList.add("border-green-500");
+  }
+});
+
+dniInput.addEventListener("input", () => {
+  dniInput.setCustomValidity("");
+  dniInput.classList.remove("border-red-500");
+  dniInput.classList.remove("border-green-500");
 });
