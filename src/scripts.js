@@ -226,7 +226,7 @@ form.addEventListener('submit', async function (e) {
 
   submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Enviando solicitud...`;
   submitBtn.disabled = true;
-
+  console.log("botón pulsado");
   try {
     await enviar();
     showMessage('success', '¡Solicitud enviada con éxito! ✅<br>Te contactaremos pronto.');
